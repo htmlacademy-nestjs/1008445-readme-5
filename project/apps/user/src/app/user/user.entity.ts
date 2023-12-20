@@ -31,6 +31,7 @@ export class UserEntity implements IAuthUser, Entity<string> {
     this.name = data.name;
     this.createdAt = data.createdAt;
     this.avatarUrl = data.avatarUrl;
+    this.passwordHash = data.passwordHash;
   }
 
   public async setPassword(password: string): Promise<UserEntity> {
@@ -41,5 +42,9 @@ export class UserEntity implements IAuthUser, Entity<string> {
 
   public async comparePassword(password: string): Promise<boolean> {
     return compare(password, this.passwordHash);
+  }
+
+  static fromObject(data: IAuthUser): UserEntity {
+    return new UserEntity(data);
   }
 }

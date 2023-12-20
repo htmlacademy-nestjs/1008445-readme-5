@@ -18,6 +18,7 @@
       "@project/shared-library/app/types": [
         "shared-library/app/types/src/index.ts"
       ],
+      "@project/shared-library/config": ["shared-library/config/src/index.ts"],
       "@project/shared-library/core": ["shared-library/core/src/index.ts"],
       "@project/shared-library/helpers": ["shared-library/helpers/src/index.ts"]
     }

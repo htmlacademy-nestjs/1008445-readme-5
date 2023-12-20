@@ -1,13 +1,21 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
 import { UserRepository } from '../user/user.repository';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from './auth.constant';
 import { UserEntity } from '../user/user.entity';
 import { LoginUserDTO } from './dto/login-user.dto';
 
+
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository) {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly configService: ConfigService,
+  ) {
+    console.log(configService.get<string>('db.host'));
+    console.log(configService.get<string>('db.user'));
   }
 
   public async register(dto: CreateUserDTO) {
@@ -46,6 +54,11 @@ export class AuthService {
   }
 
   public async getUser(id: string) {
-    return this.userRepository.findById(id);
+    const existUser = await this.userRepository.findById(id);
+
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${ id } not found`);
+    }
+    return existUser;
   }
 }
