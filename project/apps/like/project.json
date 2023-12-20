@@ -1,0 +1,53 @@
+{
+  "name": "like",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/like/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/like",
+        "main": "apps/like/src/main.ts",
+        "tsConfig": "apps/like/tsconfig.app.json",
+        "assets": ["apps/like/src/assets"],
+        "webpackConfig": "apps/like/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "like:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "like:build:development"
+        },
+        "production": {
+          "buildTarget": "like:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/like/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
